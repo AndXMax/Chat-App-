@@ -1,0 +1,25 @@
+/chatbot-project
+│── /backend                # Backend (Node.js + Express + MongoDB)
+│   ├── /models             # Database models (MongoDB schemas)
+│   ├── /routes             # API routes (e.g., user authentication, messages)
+│   ├── /controllers        # Business logic for handling API requests
+│   ├── /config             # Configuration files (e.g., database connection)
+│   ├── server.js           # Main Express server file
+│
+│── /frontend               # Frontend (React.js)
+│   ├── /src
+│   │   ├── /components     # UI components (ChatBox, MessageList, etc.)
+│   │   ├── /context        # State management (if using Context API)
+│   │   ├── /services       # API calls to backend
+│   │   ├── App.js          # Main React component
+│   │   ├── index.js        # React entry point
+│   ├── package.json        # Frontend dependencies
+│
+│── /socket                 # WebSocket logic for real-time messaging
+│   ├── socket.js           # Handles WebSocket communication
+│
+│── /nlp                    # AI-related processing (Google NLP API)
+│   ├── sentiment.js        # Google NLP API integration
+│
+│── .env                    # Environment variables (MongoDB URI, API Keys)
+│── README.md               # Project documentation
