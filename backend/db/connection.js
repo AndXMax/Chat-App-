@@ -3,7 +3,6 @@ require("dotenv").config(); // Load environment variables
 const { MongoClient, ServerApiVersion } = require("mongodb");
 
 const uri = process.env.ATLAS_URI || ""; // Use Atlas URI or fallback to local MongoDB
-console.log("MongoDB URI:", uri); // Log the MongoDB URI for debugging
 const client = new MongoClient(uri, {
     serverApi: {
         version: ServerApiVersion.v1,
