@@ -2,7 +2,7 @@
 require("dotenv").config(); // Load environment variables
 const { MongoClient, ServerApiVersion } = require("mongodb");
 
-const uri = process.env.ATLAS_URI || ""; // Use Atlas URI or fallback to local MongoDB
+const uri = process.env.ATLAS_URI || "";
 const client = new MongoClient(uri, {
     serverApi: {
         version: ServerApiVersion.v1,
@@ -20,8 +20,7 @@ async function connectToDatabase() {
         await client.db("admin").command({ ping: 1 }); // Ping the database to verify connection
         console.log("Connected to MongoDB");
 
-        // insert one for testing
-        db = client.db("chatbot_db"); // Replace "chatbot_db" with your database name
+        db = client.db("chatbot_db");
     } catch (err) {
         console.error("Error connecting to MongoDB:", err);
         process.exit(1); // Exit the process if the connection fails

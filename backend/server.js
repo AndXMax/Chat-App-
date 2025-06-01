@@ -3,6 +3,7 @@ require("dotenv").config(); // Load environment variables
 const express = require("express");
 const cors = require("cors");
 const { connectToDatabase, getDatabase } = require("./db/connection");
+const chats = require("./data/data"); 
 
 console.log("ATLAS_URI:", process.env.ATLAS_URI);
 
@@ -42,3 +43,12 @@ app.use(cors());
         console.log(`Server is running on http://localhost:${PORT}`);
     });
 })();
+
+app.get("/api/chat", (req, res) => {
+    res.send(chats);
+});
+
+app.get("/api/chat/:id", (req, res) => {
+    const singleChat = chats.find((c) => c._id === req.params.id);
+    res.send(singleChat);
+});
