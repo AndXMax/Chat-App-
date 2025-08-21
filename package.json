@@ -6,6 +6,7 @@
   "scripts": {
     "devStart": "nodemon backend/server.js",
     "start": "node backend/server.js",
+    "debug": "node inspect backend/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "engines": {
@@ -28,10 +29,13 @@
     "@chakra-ui/theme": "^3.4.6",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
+    "bcryptjs": "^3.0.2",
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
     "express": "^4.21.2",
+    "express-async-handler": "^1.2.0",
     "framer-motion": "^12.15.0",
+    "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.16.0",
     "mongoose": "^8.10.1",
     "react-router-dom": "^7.6.0",

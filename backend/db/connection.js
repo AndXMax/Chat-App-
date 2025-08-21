@@ -20,7 +20,7 @@ async function connectToDatabase() {
         await client.db("admin").command({ ping: 1 }); // Ping the database to verify connection
         console.log("Connected to MongoDB");
 
-        db = client.db("chatbot_db");
+        db = client.db("chatapp");
     } catch (err) {
         console.error("Error connecting to MongoDB:", err);
         process.exit(1); // Exit the process if the connection fails

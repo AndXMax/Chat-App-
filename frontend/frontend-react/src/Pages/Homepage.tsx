@@ -1,5 +1,7 @@
 import { SimpleGrid, Tabs } from "@chakra-ui/react";
 import { Container } from "@chakra-ui/react";
+import Login from "../components/Authentication/Login";
+import Signup from "../components/Authentication/Signup";
 
 const Homepage = () => {
   return (
@@ -21,7 +23,7 @@ const Homepage = () => {
               animationDuration: "120ms",
             }}
           >
-            Login
+            <Login />
           </Tabs.Content>
           <Tabs.Content
             value="Signup"
@@ -34,7 +36,7 @@ const Homepage = () => {
               animationDuration: "120ms",
             }}
           >
-            Signup
+            <Signup />
           </Tabs.Content>
         </Tabs.Root>
       </SimpleGrid>
