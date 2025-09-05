@@ -12,6 +12,8 @@ type ChatContextType = {
   setNotification: React.Dispatch<React.SetStateAction<JsonObject[]>>;
   chats: JsonObject[] | null;
   setChats: React.Dispatch<React.SetStateAction<JsonObject[] | null>>;
+  friends: JsonObject[];
+  setFriends: React.Dispatch<React.SetStateAction<JsonObject[]>>;
 };
 
 const ChatContext = createContext<ChatContextType | undefined>(undefined);
@@ -21,6 +23,7 @@ const ChatProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<JsonObject | null>(null);
   const [notification, setNotification] = useState<JsonObject[]>([]);
   const [chats, setChats] = useState<JsonObject[] | null>(null);
+  const [friends, setFriends] = useState<JsonObject[]>([]);
 
   const navigate = useNavigate();
 
@@ -45,6 +48,8 @@ const ChatProvider = ({ children }: { children: React.ReactNode }) => {
         setNotification,
         chats,
         setChats,
+        friends,
+        setFriends,
       }}
     >
       {children}

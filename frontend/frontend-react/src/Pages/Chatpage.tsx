@@ -1,38 +1,40 @@
-// import { Box, Heading } from "@chakra-ui/react";
-
-// const Chatpage = () => {
-//   return (
-//     <Box padding="6">
-//       <Heading size="md">Chats</Heading>
-//     </Box>
-//   );
-// };
-
-// export default Chatpage;
-
-
-import { Box } from "@chakra-ui/react";
-//import { useState } from "react";
+import { Box, Flex } from "@chakra-ui/react";
 import Chatbox from "../components/Chatbox";
 import MyChats from "../components/MyChats";
 import SideDrawer from "../components/miscellaneous/SideDrawer";
 import { ChatState } from "../Context/ChatProvider";
 
 const Chatpage = () => {
-  //const [fetchAgain, setFetchAgain] = useState(false);
   const { user } = ChatState();
 
   return (
-    <div style={{ width: "100%" }}>
+    <Box w="100%" h="100vh" display="flex" flexDirection="column">
+      {/* Top Search Bar */}
       {user && <SideDrawer />}
-      <Box d="flex" justifyContent="space-between" w="100%" h="91.5vh" p="10px">
-        {user && <MyChats />} 
-        {/* // fetchAgain={fetchAgain} */}
+      
+      {/* Main Content Area */}
+      <Flex flex="1" overflow="hidden">
+        {/* Left Sidebar - Friends/Chats */}
         {user && (
-          <Chatbox /> //fetchAgain={fetchAgain} setFetchAgain={setFetchAgain} />
+          <Box 
+            w="300px" 
+            borderRightWidth="1px" 
+            borderRightColor="gray.200"
+            bg="white"
+            overflowY="auto"
+          >
+            <MyChats />
+          </Box>
         )}
-      </Box>
-    </div>
+        
+        {/* Right Side - Chatbox */}
+        {user && (
+          <Box flex="1" overflow="hidden">
+            <Chatbox />
+          </Box>
+        )}
+      </Flex>
+    </Box>
   );
 };
 

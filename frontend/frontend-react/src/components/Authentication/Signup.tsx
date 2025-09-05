@@ -1,5 +1,8 @@
 import { VStack } from "@chakra-ui/react";
 import { Input } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
+import { Heading } from "@chakra-ui/react";
+import { Text as CText } from "@chakra-ui/react";
 import { useState } from "react";
 import { Toaster, toaster } from "@/components/ui/toaster";
 import axios, { AxiosError } from "axios";
@@ -116,68 +119,74 @@ const Signup = () => {
   };
 
   return (
-    <VStack>
+    <Box display="flex" alignItems="center" justifyContent="flex-start" bgGradient="linear(to-br, gray.50, blue.50)" p={{ base: 2, md: 8 }} pt={{ base: 2, md: 4 }} overflowY="hidden">
       <Toaster />
-      <Input
-        placeholder="Name"
-        type="text"
-        width="300px"
-        marginBottom="20px"
-        onChange={(e) => setName(e.target.value)}
-        borderColor="gray.300"
-        _hover={{ borderColor: "gray.500" }}
-        _focus={{ borderColor: "blue.500", boxShadow: "0 0 0 1px blue.500" }}
-      />
-      <Input
-        placeholder="Email"
-        type="email"
-        width="300px"
-        marginBottom="20px"
-        onChange={(e) => setEmail(e.target.value)}
-        borderColor="gray.300"
-        _hover={{ borderColor: "gray.500" }}
-        _focus={{ borderColor: "blue.500", boxShadow: "0 0 0 1px blue.500" }}
-      />
-      <Input
-        placeholder="Password"
-        type="password"
-        width="300px"
-        marginBottom="20px"
-        onChange={(e) => setPassword(e.target.value)}
-        borderColor="gray.300"
-        _hover={{ borderColor: "gray.500" }}
-        _focus={{ borderColor: "blue.500", boxShadow: "0 0 0 1px blue.500" }}
-      />
-      <Input
-        placeholder="Confirm Password"
-        type="password"
-        width="300px"
-        marginBottom="20px"
-        onChange={(e) => setConfirmpassword(e.target.value)}
-        borderColor="gray.300"
-        _hover={{ borderColor: "gray.500" }}
-        _focus={{ borderColor: "blue.500", boxShadow: "0 0 0 1px blue.500" }}
-      />
-      <Input
-        type="file"
-        p={1.5}
-        accept="image/*"
-        onChange={(e) => {
-          if (e.target.files && e.target.files[0]) {
-            postDetails(e.target.files[0]);
-          }
-        }}
-      />
-      <Button
-        colorScheme="blue"
-        width="100%"
-        style={{ marginTop: 15 }}
-        onClick={submitHandler}
-        loading={picLoading}
-      >
-        Sign Up
-      </Button>
-    </VStack>
+      <Box bg="white" _dark={{ bg: 'gray.800' }} borderRadius="xl" boxShadow="lg" p={{ base: 6, md: 10 }} w="full" maxW="5xl">
+        <VStack gap={6} align="stretch">
+          <Box textAlign="center" mb={2}>
+            <Heading size="xl">Create your account</Heading>
+            <CText color="gray.600" _dark={{ color: 'gray.300' }} mt={1}>Join us to get started</CText>
+          </Box>
+          <Box display={{ base: 'block', md: 'grid' }} gridTemplateColumns={{ base: '1fr', md: '1fr 1fr' }} gap={4}>
+            <Input w="full" size="xl" fontSize="xl"
+              placeholder="Name"
+              type="text"
+              onChange={(e) => setName(e.target.value)}
+              height="68px"
+              borderColor="gray.300"
+              _hover={{ borderColor: 'gray.400' }}
+              _focus={{ borderColor: 'blue.500', boxShadow: '0 0 0 1px var(--chakra-colors-blue-500)' }}
+            />
+            <Input w="full" size="xl" fontSize="xl"
+              placeholder="Email"
+              type="email"
+              onChange={(e) => setEmail(e.target.value)}
+              height="68px"
+              borderColor="gray.300"
+              _hover={{ borderColor: 'gray.400' }}
+              _focus={{ borderColor: 'blue.500', boxShadow: '0 0 0 1px var(--chakra-colors-blue-500)' }}
+            />
+            <Input w="full" size="xl" fontSize="xl"
+              placeholder="Password"
+              type="password"
+              onChange={(e) => setPassword(e.target.value)}
+              height="68px"
+              borderColor="gray.300"
+              _hover={{ borderColor: 'gray.400' }}
+              _focus={{ borderColor: 'blue.500', boxShadow: '0 0 0 1px var(--chakra-colors-blue-500)' }}
+            />
+            <Input w="full" size="xl" fontSize="xl"
+              placeholder="Confirm Password"
+              type="password"
+              onChange={(e) => setConfirmpassword(e.target.value)}
+              height="68px"
+              borderColor="gray.300"
+              _hover={{ borderColor: 'gray.400' }}
+              _focus={{ borderColor: 'blue.500', boxShadow: '0 0 0 1px var(--chakra-colors-blue-500)' }}
+            />
+          </Box>
+          <Input w="full" size="xl" fontSize="xl"
+            type="file"
+            p={1.5}
+            accept="image/*"
+            onChange={(e) => {
+              if (e.target.files && e.target.files[0]) {
+                postDetails(e.target.files[0]);
+              }
+            }}
+          />
+          <Button w="full"
+            colorScheme="blue"
+            size="lg"
+            borderRadius="md"
+            onClick={submitHandler}
+            loading={picLoading}
+          >
+            Sign Up
+          </Button>
+        </VStack>
+      </Box>
+    </Box>
   );
 };
 
