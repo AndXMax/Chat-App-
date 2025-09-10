@@ -8,9 +8,11 @@ import {
   Button,
   Stack,
   Spinner,
+  HoverCard,
 } from "@chakra-ui/react";
 import { io, Socket } from "socket.io-client";
-import { Tooltip } from "@/components/ui/tooltip";
+//import { Tooltip } from "@/components/ui/tooltip";
+import axios from "axios";
 
 type BasicUser = { _id: string; name?: string; pic?: string };
 type Chat = {
@@ -24,6 +26,8 @@ type Message = {
   content?: string;
   sender?: BasicUser;
   createdAt?: string;
+  sentimentScore?: string;
+  sentimentMagnitude?: string;
 };
 
 const Chatbox = () => {
@@ -35,8 +39,54 @@ const Chatbox = () => {
   const socketRef = useRef<Socket | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
+  const checkSentiment = (sentimentScore: string | undefined, sentimentMagnitude: string | undefined): React.ReactNode => {
+  // returns one of 3 emojis based on sentimentScore and sentimentMagnitude
+    if (sentimentScore === "0" && sentimentMagnitude === "0") {
+      return null;
+    }
+    if (sentimentScore === undefined || sentimentMagnitude === undefined) {
+      return null;
+    }
+    if (parseFloat(sentimentMagnitude) === 0 && parseFloat(sentimentScore) === 0) {
+      return null; // Neutral sentiment
+    }
+    if (sentimentScore !== "0" && sentimentMagnitude !== "0") {
+      if (parseFloat(sentimentScore) > 0.5 && parseFloat(sentimentMagnitude) > 0.5) {
+        return "😊"; // Positive sentiment
+      }
+      if (parseFloat(sentimentScore) < -0.5 && parseFloat(sentimentMagnitude) > 0.5) {
+        return "😞"; // Negative sentiment
+      }
+    }
+    return "😐"; // Neutral sentiment
+  }
+
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const analyzeSentiment = async (messageId: string) => {
+    try {
+      const response = await axios.patch(
+        `http://localhost:3000/api/message/${messageId}/analyze-sentiment`,
+        {},
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user?.token}`,
+          },
+        }
+      );
+
+      const updatedMessage: Message = response.data;
+      setMessages((prev) =>
+        prev.map((msg) =>
+          msg._id === updatedMessage._id ? updatedMessage : msg
+        )
+      );
+    } catch (error) {
+      console.error("Sentiment analysis request failed:", error);
+    }
   };
 
   useEffect(() => {
@@ -165,40 +215,91 @@ const Chatbox = () => {
           </Flex>
         ) : (
           <Stack gap={3}>
-            {/* {messages.map((message) => (
-              <Box key={message._id}>
-                <Flex
-                  justify={isOwnMessage(message) ? "flex-end" : "flex-start"}
-                  align="flex-end"
-                  gap={2}
-                >
-                  <Box
-                    maxW="70%"
-                    bg={isOwnMessage(message) ? "blue.500" : "white"}
-                    color={isOwnMessage(message) ? "white" : "gray.800"}
-                    px={4}
-                    py={2}
-                    borderRadius="lg"
-                    boxShadow="sm"
-                    border={!isOwnMessage(message) ? "1px solid" : "none"}
-                    borderColor="gray.200"
-                  >
-                    <Text fontSize="sm" wordBreak="break-word">
-                      {message.content || "(empty)"}
-                    </Text>
-                    <Text 
-                      fontSize="xs" 
-                      color={isOwnMessage(message) ? "blue.100" : "gray.500"}
-                      mt={1}
-                      textAlign="right"
-                    >
-                      {formatTime(message.createdAt)}
-                    </Text>
-                  </Box>
-                </Flex>
-              </Box>
-            ))} */}
             {messages.map((message) => {
+              console.log("Rendering message:", message);
+              const isMine = isOwnMessage(message);
+
+              return (
+                <Box key={message._id}>
+                  <Flex
+                    justify={isMine ? "flex-end" : "flex-start"}
+                    align="flex-end"
+                    gap={2}
+                  >
+                    {!isMine ? (
+                      <HoverCard.Root>
+                        <HoverCard.Trigger asChild>
+                          <Box
+                            cursor="pointer"
+                            maxW="70%"
+                            bg="white"
+                            color="gray.800"
+                            px={4}
+                            py={2}
+                            borderRadius="lg"
+                            boxShadow="sm"
+                            border="1px solid"
+                            borderColor="gray.200"
+                          >
+                            <Text fontSize="sm" wordBreak="break-word">
+                              {message.content || "(empty)"}
+                            </Text>
+                            <Text
+                              fontSize="xs"
+                              color="gray.500"
+                              mt={1}
+                              textAlign="right"
+                            >
+                              {formatTime(message.createdAt)}
+                              {checkSentiment(message.sentimentScore, message.sentimentMagnitude)}
+                            </Text>
+                          </Box>
+                        </HoverCard.Trigger>
+                        <HoverCard.Content
+                          w="max-content"
+                          p={2}
+                          boxShadow="md"
+                          borderRadius="md"
+                        >
+                          <Button
+                            size="sm"
+                            colorScheme="blue"
+                            onClick={() => analyzeSentiment(message._id)}
+                          >
+                            Analyze Sentiment
+                          </Button>
+                        </HoverCard.Content>
+                      </HoverCard.Root>
+                    ) : (
+                      <Box
+                        maxW="70%"
+                        bg="blue.500"
+                        color="white"
+                        px={4}
+                        py={2}
+                        borderRadius="lg"
+                        boxShadow="sm"
+                        cursor="default"
+                      >
+                        <Text fontSize="sm" wordBreak="break-word">
+                          {message.content || "(empty)"}
+                        </Text>
+                        <Text
+                          fontSize="xs"
+                          color="blue.100"
+                          mt={1}
+                          textAlign="right"
+                        >
+                          {formatTime(message.createdAt)}
+                        </Text>
+                      </Box>
+                    )}
+                  </Flex>
+                </Box>
+              );
+            })}
+
+            {/* {messages.map((message) => {
               const isMine = isOwnMessage(message);
               return (
                 <Box key={message._id}>
@@ -209,18 +310,10 @@ const Chatbox = () => {
                   >
                     <Tooltip
                       content={
-                        <Box
-                          p={2}
-                          bg="gray.700"
-                          color="white"
-                        >
-                          <Text fontWeight="bold">{message.sender?.name || "Unknown"}</Text>
-                          <Text fontSize="sm" color="gray.300">
-                            Sent at: {formatTime(message.createdAt)}
-                          </Text>
-                          <Text fontSize="xs" mt={2} color="gray.400">
-                            This is a dev-only popup!
-                          </Text>
+                        <Box p={2}>
+                          <Button>
+                            Analyze Sentiment
+                          </Button>
                         </Box>
                       }
                       disabled={isMine}
@@ -255,7 +348,7 @@ const Chatbox = () => {
                   </Flex>
                 </Box>
               );
-            })}
+            })} */}
             <div ref={messagesEndRef} />
           </Stack>
         )}

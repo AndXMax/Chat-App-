@@ -12,6 +12,14 @@ const messageModel = new mongoose.Schema({
     chat: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Chat"
+    },
+    sentimentScore: {
+        type: Number,
+        default: 0
+    },
+    sentimentMagnitude: {
+        type: Number,
+        default: 0
     }
 },
 {
