@@ -41,14 +41,11 @@ const Chatbox = () => {
 
   const checkSentiment = (sentimentScore: string | undefined, sentimentMagnitude: string | undefined): React.ReactNode => {
   // returns one of 3 emojis based on sentimentScore and sentimentMagnitude
-    if (sentimentScore === "0" && sentimentMagnitude === "0") {
-      return null;
-    }
     if (sentimentScore === undefined || sentimentMagnitude === undefined) {
       return null;
     }
     if (parseFloat(sentimentMagnitude) === 0 && parseFloat(sentimentScore) === 0) {
-      return null; // Neutral sentiment
+      return null; // not yet analyzed
     }
     if (sentimentScore !== "0" && sentimentMagnitude !== "0") {
       if (parseFloat(sentimentScore) > 0.5 && parseFloat(sentimentMagnitude) > 0.5) {
@@ -298,57 +295,6 @@ const Chatbox = () => {
                 </Box>
               );
             })}
-
-            {/* {messages.map((message) => {
-              const isMine = isOwnMessage(message);
-              return (
-                <Box key={message._id}>
-                  <Flex
-                    justify={isMine ? "flex-end" : "flex-start"}
-                    align="flex-end"
-                    gap={2}
-                  >
-                    <Tooltip
-                      content={
-                        <Box p={2}>
-                          <Button>
-                            Analyze Sentiment
-                          </Button>
-                        </Box>
-                      }
-                      disabled={isMine}
-                      openDelay={100}
-                      closeDelay={100}
-                    >
-                      <Box
-                        maxW="70%"
-                        bg={isMine ? "blue.500" : "white"}
-                        color={isMine ? "white" : "gray.800"}
-                        px={4}
-                        py={2}
-                        borderRadius="lg"
-                        boxShadow="sm"
-                        border={!isMine ? "1px solid" : "none"}
-                        borderColor="gray.200"
-                        cursor={!isMine ? "pointer" : "default"}
-                      >
-                        <Text fontSize="sm" wordBreak="break-word">
-                          {message.content || "(empty)"}
-                        </Text>
-                        <Text
-                          fontSize="xs"
-                          color={isMine ? "blue.100" : "gray.500"}
-                          mt={1}
-                          textAlign="right"
-                        >
-                          {formatTime(message.createdAt)}
-                        </Text>
-                      </Box>
-                    </Tooltip>
-                  </Flex>
-                </Box>
-              );
-            })} */}
             <div ref={messagesEndRef} />
           </Stack>
         )}
