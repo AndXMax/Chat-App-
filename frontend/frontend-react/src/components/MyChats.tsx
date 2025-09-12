@@ -30,12 +30,12 @@ const MyChats = () => {
     return other?.name || "Direct Chat";
   };
 
-  // const getChatAvatar = (chat: ChatItem): string | undefined => {
-  //   if (chat.isGroupChat) return undefined;
-  //   const meId = (user as Record<string, unknown> | null)?._id as string | undefined;
-  //   const other = (chat.users || []).find((u) => u._id !== meId);
-  //   return other?.pic;
-  // };
+  const getChatAvatar = (chat: ChatItem): string | undefined => {
+    if (chat.isGroupChat) return undefined;
+    const meId = (user as Record<string, unknown> | null)?._id as string | undefined;
+    const other = (chat.users || []).find((u) => u._id !== meId);
+    return other?.pic;
+  };
 
   return (
     <Box h="100%" p={4}>
@@ -101,7 +101,15 @@ const MyChats = () => {
                 fontSize="xs"
                 fontWeight="bold"
               >
-                {getChatName(chat).charAt(0).toUpperCase()}
+                {getChatAvatar(chat) ? (
+                  <img 
+                    src={getChatAvatar(chat)}
+                    alt={getChatName(chat)}
+                    style={{ width: "100%", height: "100%", borderRadius: "50%" }}
+                  />
+                ) : (
+                  getChatName(chat).charAt(0).toUpperCase()
+                )}
               </Box>
               <Box flex="1" minW={0}>
                 <Text 

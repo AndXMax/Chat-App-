@@ -1,4 +1,3 @@
-// filepath: [connection.js](http://_vscodecontentref_/0)
 require("dotenv").config(); // Load environment variables
 const { MongoClient, ServerApiVersion } = require("mongodb");
 
