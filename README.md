@@ -64,6 +64,17 @@ socket/          # Socket.io logic
 ## Environment Variables
 - Place your backend environment variables in `backend/.env`.
 
+## Screenshots
+
+### Login Page
+![Login Page](Screenshots/1Login.png)
+
+### Friends and Chats
+![Chat Interface](Screenshots/4AddFriend&NewChat.png)
+
+### Sentiment Analysis
+![Chat Interface](Screenshots/6SentimentAnalysis.png)
+
 ## License
 MIT
 
